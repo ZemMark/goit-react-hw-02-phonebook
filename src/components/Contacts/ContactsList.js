@@ -1,5 +1,6 @@
 import { Component } from 'react';
-import { ContactList } from './Contacts.styled.jsx';
+import { ContactList, Card } from './Contacts.styled.jsx';
+import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
 import PropTypes from 'prop-types';
 export class ContactsList extends Component {
   render() {
@@ -9,11 +10,12 @@ export class ContactsList extends Component {
         {data.map(({ name, number, id }) => (
           <li key={id}>
             <input type="checkbox"></input>
-            <p>
-              {name}, {number}
-            </p>
+            <Card>
+              <p>{name}</p>
+              <p>{number}</p>
+            </Card>
             <button type="button" onClick={e => deleteFn(id, e)}>
-              -
+              DELETE
             </button>
           </li>
         ))}

@@ -15,7 +15,7 @@ export const Container = styled.div`
     box-shadow:  36px 36px 71px #bebebe,
           -36px -36px 71px #ffffff;
 
-  h2{
+  h1,h2{
     font-variant-caps: all-petite-caps;
   }
   label{

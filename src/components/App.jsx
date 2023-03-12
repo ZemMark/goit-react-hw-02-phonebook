@@ -3,12 +3,12 @@ import Filter from './Filter/Filter';
 import ContactsList from './Contacts/ContactsList';
 import Form from './Form/Form';
 import { nanoid } from 'nanoid';
-import {Container} from './App.styled'
+import { Container } from './App.styled';
+import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
 
 export class App extends Component {
   state = {
-    contacts: [
-    ],
+    contacts: [],
     name: '',
     number: '',
     filter: '',
@@ -26,13 +26,19 @@ export class App extends Component {
       id: nanoid(),
     };
     const isAlreadyExists = this.state.contacts.find(
-        el => el.name === card.name
-      );
+      el => el.name === card.name
+    );
     if (isAlreadyExists) {
-      alert('already exists. Try to find this card in your phonebook or pick more specific name')
+      alert(
+        'already exists. Try to find this card in your phonebook or pick more specific name'
+      );
     } else {
-      this.setState((prevState) => ({ contacts: [...prevState.contacts, {...card}]}), this.reset)}
+      this.setState(
+        prevState => ({ contacts: [...prevState.contacts, { ...card }] }),
+        this.reset
+      );
     }
+  };
   reset = () => {
     this.setState({ name: '' });
     this.setState({ number: '' });
@@ -49,10 +55,26 @@ export class App extends Component {
     return visible;
   };
   deletePhoneCard = (id, e) => {
-    const updatedArray = this.state.contacts.filter(contact => contact.id !== id);
-    this.setState({ contacts: [...updatedArray] })
-  }
-  
+    const updatedArray = this.state.contacts.filter(
+      contact => contact.id !== id
+    );
+    Confirm.show(
+      'Delete this card?',
+      'this card can not be resored',
+      'Yes',
+      'No',
+      () => {
+    this.setState({ contacts: [...updatedArray] });
+
+      },
+      () => {
+        return
+      },
+      {}
+    );
+    
+  };
+
   render() {
     const { contacts, visible, filter } = this.state;
 
@@ -67,7 +89,10 @@ export class App extends Component {
         />
         <h2>Contacts</h2>
         <Filter filter={this.handleFilter} />
-        <ContactsList data={filter ? visible : contacts} deleteFn={ this.deletePhoneCard} />
+        <ContactsList
+          data={filter ? visible : contacts}
+          deleteFn={this.deletePhoneCard}
+        />
       </Container>
     );
   }
