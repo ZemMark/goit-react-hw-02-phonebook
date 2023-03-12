@@ -15,7 +15,6 @@ export class App extends Component {
   };
   onInput = e => {
     const { name } = e.target;
-    console.log(name);
     const { value } = e.target;
     this.setState({ [name]: value });
   };
@@ -26,11 +25,21 @@ export class App extends Component {
       number: this.state.number,
       id: this.state.contacts.length + 1,
     };
+    
     this.setState(
-      prevState => ({
-        ...prevState,
-        contacts: [...prevState.contacts, { ...card }],
-      }),
+      prevState => { 
+        const isAlreadyExists = prevState.contacts.find(el => el.name === card.name);
+        if (isAlreadyExists) {
+          console.log(isAlreadyExists);
+          alert('already exists. Try to find this card in your phonebook or pick more specific name')
+          return prevState;
+        } else {
+          return {
+            ...prevState, contacts: [...prevState.contacts, {...card}]
+          }
+        }
+
+      },
       this.reset
     );
   };
