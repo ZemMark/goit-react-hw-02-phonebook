@@ -2,12 +2,13 @@ import { Component } from 'react';
 import Filter from './Filter/Filter';
 import ContactsList from './Form/Contacts/ContactsList';
 import Form from './Form/Form';
+import { nanoid } from 'nanoid';
 
 export class App extends Component {
   state = {
     contacts: [
-      { name: 'Mark', number: '3248926498264892364', id: 1 },
-      { name: 'Dania', number: '2349238492384', id: 2 },
+      { name: 'Mark', number: '3248926498264892364', id: nanoid() },
+      { name: 'Dania', number: '2349238492384', id: nanoid() },
     ],
     name: '',
     number: '',
@@ -23,26 +24,16 @@ export class App extends Component {
     const card = {
       name: this.state.name,
       number: this.state.number,
-      id: this.state.contacts.length + 1,
+      id: nanoid(),
     };
-    
-    this.setState(
-      prevState => { 
-        const isAlreadyExists = prevState.contacts.find(el => el.name === card.name);
-        if (isAlreadyExists) {
-          console.log(isAlreadyExists);
-          alert('already exists. Try to find this card in your phonebook or pick more specific name')
-          return prevState;
-        } else {
-          return {
-            ...prevState, contacts: [...prevState.contacts, {...card}]
-          }
-        }
-
-      },
-      this.reset
-    );
-  };
+    const isAlreadyExists = this.state.contacts.find(
+        el => el.name === card.name
+      );
+    if (isAlreadyExists) {
+      alert('already exists. Try to find this card in your phonebook or pick more specific name')
+    } else {
+      this.setState((prevState) => ({ contacts: [...prevState.contacts, {...card}]}), this.reset)}
+    }
   reset = () => {
     this.setState({ name: '' });
     this.setState({ number: '' });
@@ -56,10 +47,15 @@ export class App extends Component {
       return acc;
     }, []);
     this.setState({ filter: value, visible: visible });
-    console.log('visible:', this.state.visible );
+    console.log('visible:', this.state.visible);
     return visible;
   };
-
+  deletePhoneCard = (id, e) => {
+    const updatedArray = this.state.contacts.filter(contact => contact.id !== id);
+    console.log(updatedArray);
+    this.setState({ contacts: [...updatedArray] })
+    console.log(e.target.parentNode);
+  }
   render() {
     const { contacts, visible, filter } = this.state;
 
@@ -74,7 +70,7 @@ export class App extends Component {
         />
         <h2>Contacts</h2>
         <Filter filter={this.handleFilter} />
-        <ContactsList data={filter? visible:contacts} />
+        <ContactsList data={filter ? visible : contacts} deleteFn={ this.deletePhoneCard} />
       </div>
     );
   }

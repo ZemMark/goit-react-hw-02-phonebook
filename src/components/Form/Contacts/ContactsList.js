@@ -1,7 +1,7 @@
 import { Component } from 'react';
 export class ContactsList extends Component {
   render() {
-    const { data } = this.props;
+    const { data, deleteFn } = this.props;
     return (
       <ul>
         {data.map(({ name, number, id }) => (
@@ -9,6 +9,9 @@ export class ContactsList extends Component {
             <p>
               {name}, {number}
             </p>
+            <button type="button" onClick={e => deleteFn(id, e)}>
+              -
+            </button>
           </li>
         ))}
       </ul>
