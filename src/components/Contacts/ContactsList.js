@@ -1,11 +1,13 @@
 import { Component } from 'react';
+import { ContactList } from './Contacts.styled.jsx';
 export class ContactsList extends Component {
   render() {
     const { data, deleteFn } = this.props;
     return (
-      <ul>
+      <ContactList>
         {data.map(({ name, number, id }) => (
           <li key={id}>
+            <input type="checkbox"></input>
             <p>
               {name}, {number}
             </p>
@@ -14,7 +16,7 @@ export class ContactsList extends Component {
             </button>
           </li>
         ))}
-      </ul>
+      </ContactList>
     );
   }
 }

@@ -1,14 +1,13 @@
 import { Component } from 'react';
 import Filter from './Filter/Filter';
-import ContactsList from './Form/Contacts/ContactsList';
+import ContactsList from './Contacts/ContactsList';
 import Form from './Form/Form';
 import { nanoid } from 'nanoid';
+import {Container} from './App.styled'
 
 export class App extends Component {
   state = {
     contacts: [
-      { name: 'Mark', number: '3248926498264892364', id: nanoid() },
-      { name: 'Dania', number: '2349238492384', id: nanoid() },
     ],
     name: '',
     number: '',
@@ -47,20 +46,18 @@ export class App extends Component {
       return acc;
     }, []);
     this.setState({ filter: value, visible: visible });
-    console.log('visible:', this.state.visible);
     return visible;
   };
   deletePhoneCard = (id, e) => {
     const updatedArray = this.state.contacts.filter(contact => contact.id !== id);
-    console.log(updatedArray);
     this.setState({ contacts: [...updatedArray] })
-    console.log(e.target.parentNode);
   }
+  
   render() {
     const { contacts, visible, filter } = this.state;
 
     return (
-      <div>
+      <Container>
         <h1>Phonebook</h1>
         <Form
           input={this.onInput}
@@ -71,7 +68,7 @@ export class App extends Component {
         <h2>Contacts</h2>
         <Filter filter={this.handleFilter} />
         <ContactsList data={filter ? visible : contacts} deleteFn={ this.deletePhoneCard} />
-      </div>
+      </Container>
     );
   }
 }
