@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import { ContactList, Card } from './Contacts.styled.jsx';
-import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
 import PropTypes from 'prop-types';
 export class ContactsList extends Component {
   render() {
